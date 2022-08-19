@@ -17,7 +17,7 @@ def home():
     martianary = mongo.db.mars.find_one()
 
     # Return template and data
-    return render_template("index.html", martianary=martianary)
+    return render_template("index.html", mars=martianary)
 
 
 # Route that will trigger the scrape function
@@ -25,10 +25,10 @@ def home():
 def scrape():
 
     # Run the scrape function
-    mars = scrape_mars.scrape_info()
+    mars = scrape_mars.scrape()
 
     # Update the Mongo database using update and upsert=True
-    mongo.db.mars.update_one({}, mars, upsert=True)
+    mongo.db.mars.update_one({}, {"$set": mars}, upsert=True)
 
     # Redirect back to home page
     return redirect("/")
